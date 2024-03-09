@@ -1,0 +1,13 @@
+---
+import type { MDXLayoutProps } from "astro";
+import Layout from "./Layout.astro";
+import Navbar from "../components/Navbar.astro";
+
+const { title, date } = Astro.props.frontmatter || Astro.props;
+---
+
+<Layout title={title}>
+  <main class="prose dark:prose-invert prose-neutral">
+    <slot />
+  </main>
+</Layout>

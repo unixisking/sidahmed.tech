@@ -1,0 +1,16 @@
+---
+interface HeaderProps {
+  title: string;
+  content: string;
+}
+const { title, content, icon } = Astro.props;
+---
+
+<header>
+  {icon && <span class="text-3xl">{icon}</span>}
+  <h1 class="dark:text-green-500 mt-2">{title}</h1>
+  <p>
+    {content}
+  </p>
+  {content && <hr class="dark:border-gray-700" />}
+</header>

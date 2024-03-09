@@ -1,0 +1,34 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import BlogPreview from "../components/BlogPreview.astro";
+
+const articles = await getCollection("blog");
+---
+
+<Layout title="Homepage">
+  <main>
+    <Header
+      title="Hi, I'm Sid Ahmed 👋"
+      content="Welcome aboard! I'll be posting very frequently articles on different topics of Web development in the blog page. I'll also showcase projects that I am working on here in the future."
+    />
+    <h2 class="text-3xl font-bold leading-none mb-[1em]">Latest articles</h2>
+    <div class="space-y-4">
+      <!-- <BlogPreview /> -->
+      {
+        articles.map(
+          ({ data: { title, category, publishedDate, href, excerpt } }) => (
+            <BlogPreview
+              title={title}
+              category={category}
+              date={publishedDate}
+              excerpt={excerpt}
+              href={href}
+            />
+          )
+        )
+      }
+    </div>
+  </main>
+</Layout>

@@ -1,0 +1,28 @@
+---
+interface BlogPreviewProps {
+  title: string;
+  excerpt: string;
+  category: string;
+  date: string;
+  href: string;
+}
+const { title, category, excerpt, date, href } = Astro.props;
+---
+
+<article class="space-y-2">
+  <div class="flex items-center space-x-4">
+    <time datetime={date} class="text-sm text-neutral-500">
+      {date}
+    </time>
+    <span
+      class="inline-flex items-center rounded-xl bg-gray-50 dark:bg-green-500/30 px-2 py-1 text-xs font-medium text-gray-600 dark:text-white ring-1 ring-inset ring-gray-500/10"
+      >{category}</span
+    >
+  </div>
+  <div>
+    <h3>
+      <a class="dark:text-green-600" href={href}>{title}</a>
+    </h3>
+    <p class="mt-2">{excerpt}</p>
+  </div>
+</article>
