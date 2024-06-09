@@ -1,12 +1,15 @@
 ---
+import { Image } from 'astro:assets'
+
 interface BlogPreviewProps {
-  title: string;
-  excerpt: string;
-  category: string;
-  date: string;
-  href: string;
+  title: string
+  excerpt: string
+  category: string
+  date: string
+  href: string
+  image: string
 }
-const { title, category, excerpt, date, href } = Astro.props;
+const { title, category, excerpt, date, href } = Astro.props
 ---
 
 <article class="space-y-2">

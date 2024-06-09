@@ -1,10 +1,10 @@
 ---
-import { getCollection } from "astro:content";
-import Layout from "../layouts/Layout.astro";
-import Header from "../components/Header.astro";
-import BlogPreview from "../components/BlogPreview.astro";
+import { getCollection } from 'astro:content'
+import Layout from '../layouts/Layout.astro'
+import Header from '../components/Header.astro'
+import BlogPreview from '../components/BlogPreview.astro'
 
-const articles = await getCollection("blog");
+const articles = await getCollection('blog')
 ---
 
 <Layout title="Homepage">
@@ -18,7 +18,9 @@ const articles = await getCollection("blog");
       <!-- <BlogPreview /> -->
       {
         articles.map(
-          ({ data: { title, category, publishedDate, href, excerpt } }) => (
+          ({
+            data: { title, category, image, publishedDate, href, excerpt },
+          }) => (
             <BlogPreview
               title={title}
               category={category}

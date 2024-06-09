@@ -1,11 +1,11 @@
 ---
-import { getCollection } from "astro:content";
-import Layout from "../layouts/Layout.astro";
-import Header from "../components/Header.astro";
-import BlogPreview from "../components/BlogPreview.astro";
+import { getCollection } from 'astro:content'
+import Layout from '../layouts/Layout.astro'
+import Header from '../components/Header.astro'
+import BlogPreview from '../components/BlogPreview.astro'
 
-const articles = await getCollection("blog");
-console.log(articles);
+const articles = await getCollection('blog')
+console.log(articles)
 ---
 
 <Layout title="Blog">

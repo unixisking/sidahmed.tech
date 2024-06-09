@@ -1,14 +1,16 @@
 ---
 interface HeaderProps {
-  title: string;
-  content: string;
+  title: string
+  content: string
 }
-const { title, content, icon } = Astro.props;
+const { title, content, icon } = Astro.props
 ---
 
 <header>
-  {icon && <span class="text-3xl">{icon}</span>}
-  <h1 class="dark:text-green-500 mt-2">{title}</h1>
+  <h1 class="dark:text-green-500 mt-2">
+    {icon && <span class="text-3xl">{icon}</span>}
+    {title}
+  </h1>
   <p>
     {content}
   </p>

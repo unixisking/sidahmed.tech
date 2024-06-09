@@ -1,14 +1,17 @@
 ---
 title: How to Set Up a Modern TypeScript Project with ESLint, Husky, and Pre-Commit Hooks
+image: setup-typescript.jpeg
 category: Tooling
 href: /blog/how-to-set-up-a-modern-typescript-project-with-eslint-husky-and-pre-commit-hooks-for-better-code-quality
 excerpt: In this article, we will create a lean TypeScript project emphasizing developer experience and code quality. We'll use ESLint for static code analysis and integrate Husky with Lint-Staged to enforce ESLint rules before each Git commit, ensuring consistent code style and quality.
-publishedDate: 07 June 2024
-image:
-  - path: hello
-  - alt: image alt
+publishedDate: 09 June 2024
 ---
-#  How to Set Up a Simple TypeScript Project with ESLint, Husky, and Pre-Commit Hooks
+import { Image } from 'astro:assets';
+import img from '../images/setup-typescript.jpeg'
+
+#  How to Set Up a Simple TypeScript Project with ESLint and Husky
+
+<Image src={img} alt="A woman doing yoga"  className="rounded-xl" />
 
 ### Summary
 By the end of this article, you'll have a TypeScript project ready for development with the following:
@@ -25,7 +28,7 @@ To get started, we'll begin by initializing our project:
 ```bash
 $ npm init -y
 ```
-Will also install `typescript` as a dev dependency and initialize our project.
+Lets also install `typescript` as a dev dependency and initialize Typescript 
 
 ```bash
 $ npm i --save-dev typescript
@@ -61,15 +64,14 @@ These options may not be what you want in 2024.
 Here is a breif description of what each option means:
 - **target**: is the version of Javascript that your Typescript will transpile into.
 - **module**: is the module system used (commonjs, UMD, esm)
-- **strict**: enabled strict mode which is a restricted variant of Javascript
-- **esModuleInterop**: enables es module interoperability with CommonJS which allows us to import CommonJS modules using ES module syntax.
+- **strict**: enables strict mode which is a restricted variant of Javascript
+- **esModuleInterop**: enables es module interoperability with CommonJS which allows us to import CommonJS modules using ES modules syntax.
 - **skipLibCheck**: skips type checking decalaration files which are files that end with .d.ts
 - **forceConsistentCasingInFileNames**: forces imports to use the exact same casing for filenames on disk
-- **outDir**: specifies the directory where the transpiled Javascript will be located
 
 You can find the meaning of these as well as all the options in the the [Typescript documentation](https://www.typescriptlang.org/tsconfig/)
 
-We can update the target option as well as the module option to the latest versions by setting the following:
+We can update the **target** option as well as the **module** option to the latest versions and also add the **outDir** option which specifies the directory where the transpiled Javascript will be located by setting the following:
 
 ```json
 {
@@ -77,7 +79,7 @@ We can update the target option as well as the module option to the latest versi
   "module": "NodeNext"
 }
 ```
-You can also use **esnext** as a target which corresponds to the latest version of ECMAScript, **es2023** is used here for stability. The recommended option for the module option is **NodeNext** which supports both cjs and esm modules.
+We can also use **esnext** as a target which corresponds to the latest version of ECMAScript, **es2023** is used here for stability. The recommended option for the module option is **NodeNext** which supports both cjs and esm modules.
 
 ### <h3 id="eslint-setup">ESLint setup</h3>
 Now that we have Typescript setup, it is time to setup our linter
@@ -177,7 +179,7 @@ npx lint-staged
 Now, our linter will run before each commit only on staged files and not on all project files !
 
 ### <h3 id="ci-cd">Configure CI/CD action</h3>
-We can also take this a step further by seting up a Github action that runs eslint in your CI pipeline
+We can also take this a step further by seting up a Github action that runs eslint in our CI pipeline
 
 ```yaml
 name: Lint
