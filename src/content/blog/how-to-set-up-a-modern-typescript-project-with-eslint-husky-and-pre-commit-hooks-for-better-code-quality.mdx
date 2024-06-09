@@ -1,0 +1,198 @@
+---
+title: How to Set Up a Modern TypeScript Project with ESLint, Husky, and Pre-Commit Hooks
+category: Tooling
+href: /blog/how-to-set-up-a-modern-typescript-project-with-eslint-husky-and-pre-commit-hooks-for-better-code-quality
+excerpt: In this article, we will create a lean TypeScript project emphasizing developer experience and code quality. We'll use ESLint for static code analysis and integrate Husky with Lint-Staged to enforce ESLint rules before each Git commit, ensuring consistent code style and quality.
+publishedDate: 07 June 2024
+image:
+  - path: hello
+  - alt: image alt
+---
+#  How to Set Up a Simple TypeScript Project with ESLint, Husky, and Pre-Commit Hooks
+
+### Summary
+By the end of this article, you'll have a TypeScript project ready for development with the following:
+- **[Typescript configured ](#typescript-setup)**
+- **[ESLint linting configured with recommended rules](#eslint-setup)**
+- **[Husky and lint-staged configured to run before each commit using Git hooks](#husky-lint-staged-config)**
+- **[A CI/CD action that runs your linter in GitHub](#ci-cd)**
+### Introduction
+In this article, we will create a lean TypeScript project emphasizing developer experience and code quality. We'll use ESLint for static code analysis and integrate Husky with Lint-Staged to enforce ESLint rules before each Git commit, ensuring consistent code style and quality.
+### <h3 id="typescript-header">Typescript setup</h3>
+
+To get started, we'll begin by initializing our project:
+
+```bash
+$ npm init -y
+```
+Will also install `typescript` as a dev dependency and initialize our project.
+
+```bash
+$ npm i --save-dev typescript
+$ npx tsc --init
+```
+After running the `tsc` command, you'll notice a new tsconfig file present in your folder structure.
+```bash
+$ ls -la
+total 16
+drwxr-xr-x  2 user group 4096 Jun  7 00:00 .
+drwxr-xr-x  5 user group 4096 Jun  7 00:00 ..
+drwxr-xr-x 10 user group 4096 Jun  7 00:00 node_modules
+-rw-r--r--  1 user group 1024 Jun  7 00:00 package-lock.json
+-rw-r--r--  1 user group 1024 Jun  7 00:00 package.json
+-rw-r--r--  1 user group 1024 Jun  7 00:00 tsconfig.json
+```
+`tsconfig.json` is a configuration file for Typescript projects, it allows us to set compiler options needed to transpile Typescript to Javascript.
+
+By default the init command will generate a file that has the following options enabled:
+These options may not be what you want in 2024.
+
+```json
+{
+  "target": "es2016",
+  "module": "commonjs",
+  "strict": true,
+  "esModuleInterop": true,
+  "skipLibCheck": true,
+  "forceConsistentCasingInFileNames": true
+}
+```
+
+Here is a breif description of what each option means:
+- **target**: is the version of Javascript that your Typescript will transpile into.
+- **module**: is the module system used (commonjs, UMD, esm)
+- **strict**: enabled strict mode which is a restricted variant of Javascript
+- **esModuleInterop**: enables es module interoperability with CommonJS which allows us to import CommonJS modules using ES module syntax.
+- **skipLibCheck**: skips type checking decalaration files which are files that end with .d.ts
+- **forceConsistentCasingInFileNames**: forces imports to use the exact same casing for filenames on disk
+- **outDir**: specifies the directory where the transpiled Javascript will be located
+
+You can find the meaning of these as well as all the options in the the [Typescript documentation](https://www.typescriptlang.org/tsconfig/)
+
+We can update the target option as well as the module option to the latest versions by setting the following:
+
+```json
+{
+  "target": "es2023",
+  "module": "NodeNext"
+}
+```
+You can also use **esnext** as a target which corresponds to the latest version of ECMAScript, **es2023** is used here for stability. The recommended option for the module option is **NodeNext** which supports both cjs and esm modules.
+
+### <h3 id="eslint-setup">ESLint setup</h3>
+Now that we have Typescript setup, it is time to setup our linter
+```bash
+npm install --save-dev eslint @eslint/js @types/eslint__js typescript-eslint
+```
+Next, lets create the config file for eslint
+```js
+// eslint.config.js
+// @ts-check
+
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
+
+export default tseslint.config(
+  eslint.configs.recommended,
+  ...tseslint.configs.strict,
+  ...tseslint.configs.stylistic,
+);
+```
+If you're curious and would like to check all the rules that will be applied:
+- [Recommended rules](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/recommended.ts)
+- [Strict rules](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/strict.ts)
+- [Stylelistic rules](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/stylistic.ts)
+
+To run ESLint from the terminal, use the following command
+```bash
+npx eslint .
+```
+
+Lets add this command to our package.json file
+
+```json
+{
+  // ...
+  "scripts": {
+    "lint": "npx eslint ."
+  }
+  // ...
+}
+```
+### <h3 id="husky-lint-staged-config">Setup Husky and lint-staged</h3>
+Now that we have a linter command that we can run, we can setup Husky which will add a Git hook that runs our command before each commit.
+
+Lets install husky and configure it
+```bash
+npm i --save-dev husky
+npx husky --init
+```
+You'll notice a new file was just added which is **.husky/pre-commit**, this file contains commands that run before each commit
+```bash
+cat .husky/pre-commit
+```
+We can test it by commiting our files in git
+
+```bash
+git init && git add . && git commit -m "init"
+
+# Output
+> ty-eslint@1.0.0 test
+> echo "Error: no test specified" && exit 1
+
+Error: no test specified
+husky - pre-commit script failed (code 1)
+```
+This is normal since husky by default is trying **npm run test** which we don't have currently in our package.json
+
+Lets edit this file and replace npm run test with **npm run lint**
+
+```bash
+# .husky/pre-commit
+npm run lint
+```
+
+Now, every time we commit our changes, the linter will be executed. But wait, do we really want the linter to run on all files each time? **Definitely not!**
+
+Lets install lint-staged and configure it so that we can run our linter only on staged files
+```bash
+npm install --save-dev lint-staged
+```
+Add lint-staged configuration in package.json
+```json
+// package.json
+{
+  "lint-"
+  "lint-staged": {
+    "*.ts": "eslint --cache --fix" // [We can also use an array here to chain commands]
+  }
+}
+```
+Lets modify our pre-commit file and add the lint-staged command instead
+```bash
+# .husky/pre-commit
+npx lint-staged
+```
+
+Now, our linter will run before each commit only on staged files and not on all project files !
+
+### <h3 id="ci-cd">Configure CI/CD action</h3>
+We can also take this a step further by seting up a Github action that runs eslint in your CI pipeline
+
+```yaml
+name: Lint
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install modules
+      run: npm i
+    - name: Run ESLint
+      run: eslint . --ext .ts # You can add more file types and separate them by a ','
+```
+### Conclusion
+In this article, we've set up a modern TypeScript project with ESLint, Husky, and lint-staged to ensure code quality and consistency. This setup not only improves the developer experience but also maintains high standards in code quality by enforcing linting rules both locally and in CI/CD pipelines.
+
+To improve the current setup, one can also add running prettier and tests in lint-staged which were not covered in this article.

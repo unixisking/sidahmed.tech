@@ -1,20 +1,24 @@
 ---
-import type { GetStaticPaths } from "astro";
-import { getCollection } from "astro:content";
-import BlogPostLayout from "../../layouts/BlogPostLayout.astro";
+import type { GetStaticPaths } from 'astro'
+import { getCollection } from 'astro:content'
+import BlogPostLayout from '../../layouts/BlogPostLayout.astro'
 
 export const getStaticPaths = (async () => {
-  const blogEntries = await getCollection("blog");
+  const blogEntries = await getCollection('blog')
   return blogEntries.map((entry) => ({
     params: { slug: entry.slug },
     props: { entry },
-  }));
-}) satisfies GetStaticPaths;
+  }))
+}) satisfies GetStaticPaths
 
-const { entry } = Astro.props;
-const { Content } = await entry.render();
+const { entry } = Astro.props
+const { Content, remarkPluginFrontmatter } = await entry.render()
 ---
 
-<BlogPostLayout frontmatter={entry.data}>
+<BlogPostLayout
+  frontmatter={entry.data}
+  minutesRead={remarkPluginFrontmatter.minutesRead}
+>
+  {remarkPluginFrontmatter.minutesRead}
   <Content />
 </BlogPostLayout>

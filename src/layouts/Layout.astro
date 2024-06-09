@@ -1,16 +1,17 @@
 ---
-import Navbar from "../components/Navbar.astro";
+import Navbar from '../components/Navbar.astro'
 
 interface Props {
-  title: string;
+  title: string
+  minutesRead: string
 }
 
-const { title } = Astro.props;
-const theme = globalThis.window ? localStorage.getItem("theme") : null;
+const { title } = Astro.props
+const theme = globalThis.window ? localStorage.getItem('theme') : null
 ---
 
 <!doctype html>
-<html class={`${theme ? theme : ""}`} lang="en">
+<html class={`${theme ? theme : ''}`} lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content="Astro description" />
@@ -71,6 +72,12 @@ const theme = globalThis.window ? localStorage.getItem("theme") : null;
   }
   hr {
     @apply my-6 border-neutral-200 dark:border-neutral-800;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply dark:text-green-500;
   }
 
   .dark {

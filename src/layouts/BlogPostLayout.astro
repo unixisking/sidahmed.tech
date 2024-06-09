@@ -1,13 +1,12 @@
 ---
-import type { MDXLayoutProps } from "astro";
-import Layout from "./Layout.astro";
-import Navbar from "../components/Navbar.astro";
+import Layout from './Layout.astro'
 
-const { title, date } = Astro.props.frontmatter || Astro.props;
+const { title, date, minutesRead } = Astro.props.frontmatter || Astro.props
 ---
 
-<Layout title={title}>
+<Layout title={title} minutesRead={minutesRead}>
   <main class="prose dark:prose-invert prose-neutral">
+    {minutesRead}
     <slot />
   </main>
 </Layout>
