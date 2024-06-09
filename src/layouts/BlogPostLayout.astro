@@ -4,7 +4,7 @@ import Layout from './Layout.astro'
 const { title, date, minutesRead } = Astro.props.frontmatter || Astro.props
 ---
 
-<Layout title={title} minutesRead={minutesRead}>
+<Layout title={title}>
   <main class="prose dark:prose-invert prose-neutral">
     {minutesRead}
     <slot />
