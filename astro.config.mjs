@@ -9,7 +9,6 @@ import { remarkReadingTime } from './src/utils/remark-reading-time.mts'
 // https://astro.build/config
 export default defineConfig({
   markdown: {
-    syntaxHighlight: 'prism',
     remarkPlugins: [remarkReadingTime],
   },
   integrations: [tailwind(), mdx(), preact()],

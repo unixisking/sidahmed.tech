@@ -9,6 +9,9 @@ publishedDate: 09 June 2024
 import { Image } from 'astro:assets';
 import img from '../images/setup-typescript.jpeg'
 
+import EnhancedPreElement from "../../components/EnhancedPre.tsx"
+export const components = { pre: (props) => <EnhancedPreElement client:load {...props} />}
+
 #  How to Set Up a Simple TypeScript Project with ESLint and Husky
 
 <Image src={img} alt="A woman doing yoga"  className="rounded-xl" />
@@ -28,7 +31,7 @@ To get started, we'll begin by initializing our project:
 ```bash
 $ npm init -y
 ```
-Lets also install `typescript` as a dev dependency and initialize Typescript 
+Let's also install `typescript` as a dev dependency and initialize Typescript 
 
 ```bash
 $ npm i --save-dev typescript
@@ -86,7 +89,7 @@ Now that we have Typescript setup, it is time to setup our linter
 ```bash
 npm install --save-dev eslint @eslint/js @types/eslint__js typescript-eslint
 ```
-Next, lets create the config file for eslint
+Next, let's create the config file for eslint
 ```js
 // eslint.config.js
 // @ts-check
@@ -110,7 +113,7 @@ To run ESLint from the terminal, use the following command
 npx eslint .
 ```
 
-Lets add this command to our package.json file
+Let's add this command to our package.json file
 
 ```json
 {
@@ -124,7 +127,7 @@ Lets add this command to our package.json file
 ### <h3 id="husky-lint-staged-config">Setup Husky and lint-staged</h3>
 Now that we have a linter command that we can run, we can setup Husky which will add a Git hook that runs our command before each commit.
 
-Lets install husky and configure it
+Let's install husky and configure it
 ```bash
 npm i --save-dev husky
 npx husky --init
@@ -147,7 +150,7 @@ husky - pre-commit script failed (code 1)
 ```
 This is normal since husky by default is trying **npm run test** which we don't have currently in our package.json
 
-Lets edit this file and replace npm run test with **npm run lint**
+Let's edit this file and replace npm run test with **npm run lint**
 
 ```bash
 # .husky/pre-commit
@@ -156,7 +159,7 @@ npm run lint
 
 Now, every time we commit our changes, the linter will be executed. But wait, do we really want the linter to run on all files each time? **Definitely not!**
 
-Lets install lint-staged and configure it so that we can run our linter only on staged files
+Let's install lint-staged and configure it so that we can run our linter only on staged files
 ```bash
 npm install --save-dev lint-staged
 ```
@@ -170,7 +173,7 @@ Add lint-staged configuration in package.json
   }
 }
 ```
-Lets modify our pre-commit file and add the lint-staged command instead
+Let's modify our pre-commit file and add the lint-staged command instead
 ```bash
 # .husky/pre-commit
 npx lint-staged
