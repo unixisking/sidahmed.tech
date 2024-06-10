@@ -1,11 +1,11 @@
 ---
 import Layout from './Layout.astro'
 
-const { title, date, minutesRead } = Astro.props.frontmatter || Astro.props
+const { title, minutesRead, excerpt } = Astro.props.frontmatter || Astro.props
 ---
 
-<Layout title={title}>
-  <main class="prose dark:prose-invert prose-neutral mb-48">
+<Layout title={title} description={excerpt}>
+  <main class="prose dark:prose-invert prose-neutral">
     {minutesRead}
     <slot />
   </main>

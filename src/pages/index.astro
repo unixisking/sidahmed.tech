@@ -7,7 +7,10 @@ import BlogPreview from '../components/BlogPreview.astro'
 const articles = await getCollection('blog')
 ---
 
-<Layout title="Homepage">
+<Layout
+  title="Homepage"
+  description="Welcome aboard! I'll be posting very frequently articles on different topics of Web development in the blog page. I'll also showcase projects that I am working on here in the future."
+>
   <main>
     <Header
       title="Hi, I'm Sid Ahmed 👋"
@@ -18,9 +21,7 @@ const articles = await getCollection('blog')
       <!-- <BlogPreview /> -->
       {
         articles.map(
-          ({
-            data: { title, category, image, publishedDate, href, excerpt },
-          }) => (
+          ({ data: { title, category, publishedDate, href, excerpt } }) => (
             <BlogPreview
               title={title}
               category={category}
