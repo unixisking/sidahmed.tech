@@ -1,23 +1,22 @@
-import { useState } from "preact/hooks";
+import { useState } from 'preact/hooks'
 
 export default function ThemeButton() {
-  const [theme, setTheme] = useState(localStorage.getItem("theme"));
-  console.log("current theme", theme);
+  const [theme, setTheme] = useState(localStorage.getItem('theme'))
 
   return (
     <button
       onClick={() => {
-        const docElement = document.documentElement;
-        docElement.classList.toggle("dark");
+        const docElement = document.documentElement
+        docElement.classList.toggle('dark')
 
-        const theme = docElement.classList.contains("dark") ? "dark" : "light";
-        localStorage.setItem("theme", theme);
-        setTheme(theme);
+        const theme = docElement.classList.contains('dark') ? 'dark' : 'light'
+        localStorage.setItem('theme', theme)
+        setTheme(theme)
       }}
       id="toggleDisplayMode"
       className="group text-neutral-900 dark:text-green-500 border-[1.5px] border-gray-300 dark:border-green-500 p-1.5 rounded-full hover:shadow-md dark:shadow-white/30"
     >
-      {theme === "light" ? (
+      {theme === 'light' ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -49,5 +48,5 @@ export default function ThemeButton() {
         </svg>
       )}
     </button>
-  );
+  )
 }
